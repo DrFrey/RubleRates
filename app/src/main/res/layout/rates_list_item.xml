@@ -8,11 +8,15 @@
         <variable
             name="rates"
             type="com.example.rublerates.data.Rates" />
+        <variable
+            name="bank"
+            type="com.example.rublerates.data.Bank" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_margin="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,12 +24,13 @@
             android:orientation="horizontal">
 
             <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/bank_name"
-                android:layout_weight="2"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:text="@{bank.rusName}"
                 tools:text="Bank name"
-                android:text="bank name placeholder"/>
+                style="@style/itemTextStyle" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
@@ -33,7 +38,8 @@
                 android:id="@+id/usd_buy"
                 android:layout_weight="1"
                 tools:text="USD"
-                app:convertDouble="@{rates.bankUsdBuy}"/>
+                app:convertDouble="@{rates.bankUsdBuy}"
+                style="@style/itemTextStyle"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
@@ -41,7 +47,8 @@
                 android:id="@+id/usd_sell"
                 android:layout_weight="1"
                 tools:text="USD"
-                app:convertDouble="@{rates.bankUsdSell}"/>
+                app:convertDouble="@{rates.bankUsdSell}"
+                style="@style/itemTextStyle"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
@@ -49,7 +56,8 @@
                 android:id="@+id/eur_buy"
                 android:layout_weight="1"
                 tools:text="EUR"
-                app:convertDouble="@{rates.bankEurBuy}"/>
+                app:convertDouble="@{rates.bankEurBuy}"
+                style="@style/itemTextStyle"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
@@ -57,7 +65,8 @@
                 android:id="@+id/eur_sell"
                 android:layout_weight="1"
                 tools:text="EUR"
-                app:convertDouble="@{rates.bankEurSell}"/>
+                app:convertDouble="@{rates.bankEurSell}"
+                style="@style/itemTextStyle"/>
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>

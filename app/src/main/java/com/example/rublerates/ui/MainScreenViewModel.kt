@@ -25,6 +25,10 @@ class MainScreenViewModel(val repo: RatesRepository) : ViewModel() {
     val error: LiveData<String>
         get() = _error
 
+    fun clearError() {
+        _error.value = ""
+    }
+
     fun getLatestRates() {
         compositeDisposable.add(
             repo.allRates
@@ -41,17 +45,6 @@ class MainScreenViewModel(val repo: RatesRepository) : ViewModel() {
                         }
                     }
                     newList.values.toList()
-                }
-                .map { l ->
-                    var banks = listOf<Bank>()
-                    repo.allBanks
-                        .subscribeOn(Schedulers.io())
-                        .subscribe {
-                            banks = it
-                        }
-                    for (el in l) {
-
-                    }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

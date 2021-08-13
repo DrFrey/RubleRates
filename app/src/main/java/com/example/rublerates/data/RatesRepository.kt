@@ -6,6 +6,7 @@ import com.example.rublerates.utils.*
 import com.google.gson.Gson
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
@@ -25,6 +26,10 @@ class RatesRepository(
     val allRates = ratesDao.getAllRates()
 
     val allBanks = bankDao.getAllBanks()
+
+    fun getBankById(id: Int): Single<Bank> {
+        return bankDao.getBankById(id)
+    }
 
     fun insertRates(rates: Rates) {
         ratesDao.insertRates(rates)
@@ -218,7 +223,7 @@ class RatesRepository(
                         val elements = doc.getElementsByAttribute("data-react-props")
                         for (el in elements) {
                             if (el.attr("data-react-props")
-                                    .contains("{\"currencyRates\":{\"online\"")
+                                    .contains("\"currencyRates\":{\"online\"")
                             ) {
                                 jsonString = el.attr("data-react-props")
                             }
@@ -260,7 +265,7 @@ class RatesRepository(
                             } catch (e: Exception) {
                                 Log.d("___", "processOpenRates error: ${e.message.toString()}")
                             }
-                        }
+                        } else Log.d("___", "otkritie json string empty")
                     }
                 }, object : Consumer<Throwable> {
                     override fun accept(t: Throwable?) {
