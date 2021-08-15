@@ -15,7 +15,7 @@ interface RatesDao {
     fun getAllRates(): Flowable<List<Rates>>
 
     @Query("DELETE FROM rates")
-    fun deleteAll()
+    fun deleteAll(): Completable
 
 
 }

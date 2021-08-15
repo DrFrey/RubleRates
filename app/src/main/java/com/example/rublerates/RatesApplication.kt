@@ -6,7 +6,7 @@ import com.example.rublerates.data.RatesRepository
 
 class RatesApplication : Application() {
     companion object {
-        private lateinit var instance: RatesApplication
+        lateinit var instance: RatesApplication
 
         private val database by lazy {
             RatesDatabase.getDatabase(instance)

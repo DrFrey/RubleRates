@@ -18,56 +18,85 @@
         android:layout_width="match_parent"
         android:layout_margin="8dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/bank_name"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
-                android:text="@{bank.rusName}"
+                app:setLocalisedName="@{bank}"
                 tools:text="Bank name"
-                style="@style/itemTextStyle" />
+                style="@style/itemTextStyle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/usd_buy"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:id="@+id/updated"
+                tools:text="last updated"
+                app:formattedDateTime="@{rates.date}"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-condensed-light"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/usd_buy"
+                app:layout_constraintTop_toBottomOf="@id/bank_name"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/usd_buy"
-                android:layout_weight="1"
                 tools:text="USD"
                 app:convertDouble="@{rates.bankUsdBuy}"
-                style="@style/itemTextStyle"/>
+                style="@style/itemTextStyle"
+                app:layout_constraintStart_toEndOf="@id/bank_name"
+                app:layout_constraintEnd_toStartOf="@id/usd_sell"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/usd_sell"
-                android:layout_weight="1"
                 tools:text="USD"
                 app:convertDouble="@{rates.bankUsdSell}"
-                style="@style/itemTextStyle"/>
+                style="@style/itemTextStyle"
+                app:layout_constraintStart_toEndOf="@id/usd_buy"
+                app:layout_constraintEnd_toStartOf="@id/eur_buy"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/eur_buy"
-                android:layout_weight="1"
                 tools:text="EUR"
                 app:convertDouble="@{rates.bankEurBuy}"
-                style="@style/itemTextStyle"/>
+                style="@style/itemTextStyle"
+                app:layout_constraintStart_toEndOf="@id/usd_sell"
+                app:layout_constraintEnd_toStartOf="@id/eur_sell"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/eur_sell"
-                android:layout_weight="1"
                 tools:text="EUR"
                 app:convertDouble="@{rates.bankEurSell}"
-                style="@style/itemTextStyle"/>
-        </LinearLayout>
+                style="@style/itemTextStyle"
+                app:layout_constraintStart_toEndOf="@id/eur_buy"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 </layout>

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">RubleRates</string>
+    <string name="no_internet_error">Please check your connection</string>
+    <string name="bank_header">Bank</string>
+    <string name="usd_buy_header">USD\nbuy</string>
+    <string name="usd_sell_header">USD\nsell</string>
+    <string name="eur_buy_header">EUR\nbuy</string>
+    <string name="eur_sell_header">EUR\nsell</string>
 </resources>

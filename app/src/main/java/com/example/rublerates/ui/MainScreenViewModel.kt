@@ -1,10 +1,16 @@
 package com.example.rublerates.ui
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.rublerates.R
+import com.example.rublerates.RatesApplication
 import com.example.rublerates.data.Bank
 import com.example.rublerates.data.Rates
 import com.example.rublerates.data.RatesRepository
@@ -57,10 +63,16 @@ class MainScreenViewModel(val repo: RatesRepository) : ViewModel() {
 
 
     init {
+        repo.deleteAll()
+            .subscribeOn(Schedulers.io())
+            .subscribe()
         fetchFreshRates()
     }
 
     fun fetchFreshRates() {
+        if(!isInternetAvailable()) {
+            _error.value = RatesApplication.instance.applicationContext.getString(R.string.no_internet_error)
+        }
         compositeDisposable.addAll(
             repo.sberRates,
             repo.alfaRates,
@@ -79,6 +91,37 @@ class MainScreenViewModel(val repo: RatesRepository) : ViewModel() {
             compositeDisposable.clear()
             Log.d("___", "disposable disposed")
         }
+    }
+
+    private fun isInternetAvailable(): Boolean {
+        var result = false
+        val context = RatesApplication.instance.applicationContext
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val actNw =
+                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+            result = when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        } else {
+            connectivityManager.run {
+                connectivityManager.activeNetworkInfo?.run {
+                    result = when (type) {
+                        ConnectivityManager.TYPE_WIFI -> true
+                        ConnectivityManager.TYPE_MOBILE -> true
+                        ConnectivityManager.TYPE_ETHERNET -> true
+                        else -> false
+                    }
+                }
+            }
+        }
+        return result
     }
 
 }

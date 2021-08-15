@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.rublerates.utils.*
 import com.google.gson.Gson
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -37,8 +38,8 @@ class RatesRepository(
             .subscribe()
     }
 
-    fun deleteAll() {
-        ratesDao.deleteAll()
+    fun deleteAll(): Completable {
+        return ratesDao.deleteAll()
     }
 
     // Retrieving data from the Internet
@@ -359,9 +360,9 @@ class RatesRepository(
                             bankId = bankId ?: -1,
                             bankEurBuy = buyRates.select("p").get(2).text().toDouble()
                                 ?: 0.0,
-                            bankEurSell = buyRates.select("p").get(0).text().toDouble()
+                            bankEurSell = sellRates.select("p").get(2).text().toDouble()
                                 ?: 0.0,
-                            bankUsdBuy = sellRates.select("p").get(2).text().toDouble()
+                            bankUsdBuy = buyRates.select("p").get(0).text().toDouble()
                                 ?: 0.0,
                             bankUsdSell = sellRates.select("p").get(0).text().toDouble()
                                 ?: 0.0
