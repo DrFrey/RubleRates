@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.rublerates.R
 import com.example.rublerates.RatesApplication
-import com.example.rublerates.data.Bank
 import com.example.rublerates.data.Rates
 import com.example.rublerates.data.RatesRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -33,6 +32,24 @@ class MainScreenViewModel(val repo: RatesRepository) : ViewModel() {
 
     fun clearError() {
         _error.value = ""
+    }
+
+
+    init {
+        repo.deleteAll()
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+        fetchFreshRates()
+    }
+
+    fun fetchFreshRates() {
+        if (!isInternetAvailable()) {
+            _error.value =
+                RatesApplication.instance.applicationContext.getString(R.string.no_internet_error)
+        } else {
+            repo.refresh()
+        }
+        getLatestRates()
     }
 
     fun getLatestRates() {
@@ -61,35 +78,16 @@ class MainScreenViewModel(val repo: RatesRepository) : ViewModel() {
         )
     }
 
-
-    init {
-        repo.deleteAll()
-            .subscribeOn(Schedulers.io())
-            .subscribe()
-        fetchFreshRates()
-    }
-
-    fun fetchFreshRates() {
-        if(!isInternetAvailable()) {
-            _error.value = RatesApplication.instance.applicationContext.getString(R.string.no_internet_error)
-        }
-        compositeDisposable.addAll(
-            repo.sberRates,
-            repo.alfaRates,
-            repo.gazRates,
-            repo.openRates,
-            repo.mkbRates,
-            repo.rshbRates,
-            repo.vtbRates,
-            repo.raifRates
-        )
-        getLatestRates()
-    }
-
     override fun onCleared() {
+        Log.d("___", "oncleared called")
+
         if (!compositeDisposable.isDisposed) {
             compositeDisposable.clear()
             Log.d("___", "disposable disposed")
+        }
+        if (!repo.compositeDisposable.isDisposed) {
+            repo.compositeDisposable.clear()
+            Log.d("___", "repo disposable disposed")
         }
     }
 
